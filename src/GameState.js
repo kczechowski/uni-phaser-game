@@ -6,4 +6,5 @@ export const GameState = () => ({
     residentialRate: 100,
     industrialRate: 100,
     marketRate: 100,
+    expectedProfits: 0,
 });
