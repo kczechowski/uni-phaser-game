@@ -66,6 +66,7 @@ class IsoInteractionExample extends Scene {
 
         const onGrow = () => {
             this._gameManager.grow();
+            this.createMap();
             // console.clear();
             // console.log(this._gameManager);
         };
@@ -78,6 +79,7 @@ class IsoInteractionExample extends Scene {
         });
 
         const onCosts = () => {
+            this._gameManager.profits();
             this._gameManager.costs();
             // console.clear();
             console.log(this._gameManager.gameState);
@@ -106,10 +108,10 @@ class IsoInteractionExample extends Scene {
                 const mapObject = this._gameManager.getMapObjectAt(x, y);
                 // console.log(mapObject);
                 if(this._gameManager.blockHasWater(x,y)) {
-                    console.log('block has water');
+                    // console.log('block has water');
                 }
                 if(this._gameManager.blockHasElectricity(x,y)) {
-                    console.log('block has electricity');
+                    // console.log('block has electricity');
                 }
 
                 const tile = this.add.isoSprite(xOffset, yOffset, 0, mapObject.image, this.isoGroup);

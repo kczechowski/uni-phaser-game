@@ -7,4 +7,5 @@ export const GameState = () => ({
     industrialRate: 100,
     marketRate: 100,
     expectedProfits: 0,
+    availableJobs: 0,
 });
