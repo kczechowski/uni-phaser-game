@@ -11,11 +11,7 @@ export class GameManager {
 
     }
 
-    createAndFillTwoDArray(
-                               rows,
-                               columns,
-                               defaultValue
-                           ) {
+    createAndFillTwoDArray(rows, columns, defaultValue) {
         return Array.from({length: rows}, () => (
             Array.from({length: columns}, () => defaultValue)
         ))
@@ -42,9 +38,9 @@ export class GameManager {
 
     tryToPutObjectAt(tileX, tileY) {
         const toAdd = this._gameState.currentBlock;
-        if(!toAdd) throw 'No currentBlock';
+        if (!toAdd) throw 'No currentBlock';
         //TODO add constraints on building
-        if(this.getMapObjectAt(tileX, tileY).constructor.name === toAdd.constructor.name) throw 'Exists the same';
+        if (this.getMapObjectAt(tileX, tileY).constructor.name === toAdd.constructor.name) throw 'Exists the same';
         this.replaceMapObjectAt(tileX, tileY, toAdd);
     }
 
