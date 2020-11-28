@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "phaser": "^3.x",
+    "phaser-ui-tools": "^2.0.0-beta",
     "phaser3-plugin-isometric": "^0.0.7"
   },
   "scripts": {
