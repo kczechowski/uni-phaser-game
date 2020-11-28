@@ -1,10 +1,11 @@
+/* eslint-disable indent */
 /* eslint-disable linebreak-style */
-import Phaser, {Game, Scene} from 'phaser';
+import Phaser, { Game, Scene } from 'phaser';
 import IsoPlugin from 'phaser3-plugin-isometric';
-import {Column, TextSprite, TextButton} from 'phaser-ui-tools';
+import { Column, TextSprite, TextButton } from 'phaser-ui-tools';
 
-import {GameManager} from "./GameManager";
-import {RoadMapObject} from "./map";
+import { GameManager } from "./GameManager";
+import { RoadMapObject } from "./map";
 
 
 class IsoInteractionExample extends Scene {
@@ -12,7 +13,7 @@ class IsoInteractionExample extends Scene {
     constructor() {
         const sceneConfig = {
             key: 'IsoInteractionExample',
-            mapAdd: {isoPlugin: 'iso'}
+            mapAdd: { isoPlugin: 'iso' }
         };
 
 
@@ -36,7 +37,7 @@ class IsoInteractionExample extends Scene {
         this.load.image('marketbuilding', '../dist/assets/marketbuilding.png');
         this.load.image('industrialzone', '../dist/assets/industrialzone.png');
         this.load.image('industrialbuilding', '../dist/assets/industrialbuilding.png');
-        this.load.spritesheet('button', assetRoot + 'button.png', {frameWidth: 128, frameHeight: 48});
+        this.load.spritesheet('button', assetRoot + 'button.png', { frameWidth: 128, frameHeight: 48 });
         this.load.scenePlugin({
             key: 'IsoPlugin',
             url: IsoPlugin,
@@ -114,10 +115,10 @@ class IsoInteractionExample extends Scene {
     }
 
     addUi() {
-        var textStyle = {'fill': '#FFF', 'font': '16px Courier New'};
+        var textStyle = { 'fill': '#FFF', 'font': '16px Courier New' };
         this.header = new TextSprite(this, 0, 0, 'header').setText('SimCityPAW', textStyle).setOrigin(0.0, 0.0);
 
-        var road = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
+        var road = new TextButton(this, 0, 0, 'button', buttonHandler, this, 1, 0, 2, 1)
             .setText('Road', textStyle)
             .eventTextYAdjustment(3);
         var buliding1 = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
@@ -161,5 +162,8 @@ function resize(gameSize) {
     this.cameras.resize(width, height);
 }
 
+function buttonHandler() {
+    this.header.setText('Clicked').setOrigin(0.0, 0.0);
+}
 
 const game = new Game(config);
