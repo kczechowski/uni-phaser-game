@@ -96,6 +96,7 @@ class IsoInteractionExample extends Scene {
 
     createMap() {
         this.isoGroup.clear(true, true);
+        this.iconLayer.clear(true, true);
 
         const tileSize = 42;
 
@@ -106,15 +107,19 @@ class IsoInteractionExample extends Scene {
             for (let y = 0; y < this._gameManager.map.length; y++) {
 
                 const mapObject = this._gameManager.getMapObjectAt(x, y);
-                // console.log(mapObject);
-                if(this._gameManager.blockHasWater(x,y)) {
-                    // console.log('block has water');
-                }
-                if(this._gameManager.blockHasElectricity(x,y)) {
-                    // console.log('block has electricity');
-                }
 
                 const tile = this.add.isoSprite(xOffset, yOffset, 0, mapObject.image, this.isoGroup);
+
+                if(this._gameManager.blockHasWater(x,y) && !this._gameManager.blockHasElectricity(x,y)) {
+                    tile.setTint(0x8888ff);
+                } else if (this._gameManager.blockHasWater(x,y) && this._gameManager.blockHasElectricity(x,y)) {
+                    tile.setTint(0xff77ff)
+                } else if (!this._gameManager.blockHasWater(x,y) && !this._gameManager.blockHasElectricity(x,y)) {
+                    tile.setTint(0xffffff);
+                } else if (!this._gameManager.blockHasWater(x,y) && this._gameManager.blockHasElectricity(x,y)) {
+                    tile.setTint(0xffff99);
+                }
+
                 tile.setInteractive();
 
                 tile.on('pointerup', (e) => {
