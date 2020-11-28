@@ -105,6 +105,12 @@ class IsoInteractionExample extends Scene {
 
                 const mapObject = this._gameManager.getMapObjectAt(x, y);
                 // console.log(mapObject);
+                if(this._gameManager.blockHasWater(x,y)) {
+                    console.log('block has water');
+                }
+                if(this._gameManager.blockHasElectricity(x,y)) {
+                    console.log('block has electricity');
+                }
 
                 const tile = this.add.isoSprite(xOffset, yOffset, 0, mapObject.image, this.isoGroup);
                 tile.setInteractive();

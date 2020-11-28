@@ -60,10 +60,30 @@ export class GameManager {
 
         let offsetStopX = (tileX + area) >= this._map.length ? this._map.length - 1 : (tileX + area);
         let offsetStopY = (tileY + area) >= this._map.length ? this._map.length - 1 : (tileY + area);
+
+        const blocks = [];
+
+        for (let x = offsetStartX; x <= offsetStopX; x++) {
+            for (let y = offsetStartY; y <= offsetStopY; y++) {
+
+                blocks.push(this.getMapObjectAt(x, y));
+            }
+        }
+
+        return blocks;
     }
 
     blockHasWater(tileX, tileY) {
+        const blocks = this.getBlockArea(tileX, tileY, 1);
 
+        return blocks.filter(b => b.type === 'water').length > 0;
+    }
+
+
+    blockHasElectricity(tileX, tileY) {
+        const blocks = this.getBlockArea(tileX, tileY, 1);
+
+        return blocks.filter(b => b.type === 'electricity').length > 0;
     }
 
     grow() {
