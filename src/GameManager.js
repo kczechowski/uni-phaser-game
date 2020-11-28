@@ -40,6 +40,18 @@ export class GameManager {
         this.replaceMapObjectAt(tileX, tileY, new RoadMapObject())
     }
 
+    tryToPutObjectAt(tileX, tileY) {
+        const toAdd = this._gameState.currentBlock;
+        if(!toAdd) throw 'No currentBlock';
+        //TODO add constraints on building
+        if(this.getMapObjectAt(tileX, tileY).constructor.name === toAdd.constructor.name) throw 'Exists the same';
+        this.replaceMapObjectAt(tileX, tileY, toAdd);
+    }
+
+    setCurrentBlock(obj) {
+        this._gameState.currentBlock = obj;
+    }
+
     get gameState() {
         return this._gameState;
     }
