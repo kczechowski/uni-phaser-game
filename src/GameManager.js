@@ -53,6 +53,19 @@ export class GameManager {
         return this._gameState.cash - mapObject.price >= 0;
     }
 
+    getBlockArea(tileX, tileY, area) {
+
+        let offsetStartX = (tileX - area) < 0 ? 0 : (tileX - area);
+        let offsetStartY = (tileY - area) < 0 ? 0 : (tileY - area);
+
+        let offsetStopX = (tileX + area) >= this._map.length ? this._map.length - 1 : (tileX + area);
+        let offsetStopY = (tileY + area) >= this._map.length ? this._map.length - 1 : (tileY + area);
+    }
+
+    blockHasWater(tileX, tileY) {
+
+    }
+
     grow() {
         // console.log('grow');
     }
