@@ -5,7 +5,7 @@ import IsoPlugin from 'phaser3-plugin-isometric';
 import { Column, TextSprite, TextButton } from 'phaser-ui-tools';
 
 import { GameManager } from "./GameManager";
-import { ElectricityMapObject, IndustrialBuildingMapObject, MarketBuildingMapObject, ResidentialBuildingMapObject, RoadMapObject, WaterMapObject } from "./map";
+import { ElectricityMapObject, IndustrialBuildingMapObject, IndustrialZoneMapObject, MarketBuildingMapObject, MarketZoneMapObject, ResidentialBuildingMapObject, ResidentialZoneMapObject, RoadMapObject, WaterMapObject } from "./map";
 
 
 class IsoInteractionExample extends Scene {
@@ -116,7 +116,6 @@ class IsoInteractionExample extends Scene {
                     console.log('clicked at tile:', x, y, this._gameManager.getMapObjectAt(x, y));
 
                     try {
-                        this._gameManager.setCurrentBlock(new RoadMapObject());
                         this._gameManager.tryToPutObjectAt(x, y);
                         console.log('put object at tile:', x, y, this._gameManager.getMapObjectAt(x, y));
                         this.createMap();
@@ -149,31 +148,31 @@ class IsoInteractionExample extends Scene {
         var textStyle = { 'fill': '#FFF', 'font': '16px Courier New' };
         this.header = new TextSprite(this, 0, 0, 'header').setText('SimCityPAW', textStyle).setOrigin(0.0, 0.0);
 
-        var road = new TextButton(this, 0, 0, 'button', () => { selectBuildingHandler('Road', this.header, this._gameManager); }, this, 1, 0, 2, 1)
+        var road = new TextButton(this, 0, 0, 'button', () => { selectZoneHandler('Road', this.header, this._gameManager); }, this, 1, 0, 2, 1)
             .setText('Road', textStyle)
             .eventTextYAdjustment(3);
-        var buliding1 = new TextButton(this, 0, 0, 'button', () => { selectBuildingHandler('Residential Zone', this.header, this._gameManager); }, this, 1, 0, 2, 1)
+        var residentialZone = new TextButton(this, 0, 0, 'button', () => { selectZoneHandler('Residential Zone', this.header, this._gameManager); }, this, 1, 0, 2, 1)
             .setText('Residential Zone', textStyle)
             .eventTextYAdjustment(3);
-        var building2 = new TextButton(this, 0, 0, 'button', () => { selectBuildingHandler('Market Zone', this.header, this._gameManager); }, this, 1, 0, 2, 1)
+        var marketZone = new TextButton(this, 0, 0, 'button', () => { selectZoneHandler('Market Zone', this.header, this._gameManager); }, this, 1, 0, 2, 1)
             .setText('Market Zone', textStyle)
             .eventTextYAdjustment(3);
-        var building3 = new TextButton(this, 0, 0, 'button', () => { selectBuildingHandler('Industrial Zone', this.header, this._gameManager); }, this, 1, 0, 2, 1)
+        var industrialZone = new TextButton(this, 0, 0, 'button', () => { selectZoneHandler('Industrial Zone', this.header, this._gameManager); }, this, 1, 0, 2, 1)
             .setText('Industrial Zone', textStyle)
             .eventTextYAdjustment(3);
-        var building4 = new TextButton(this, 0, 0, 'button', () => { selectBuildingHandler('Water', this.header, this._gameManager); }, this, 1, 0, 2, 1)
+        var water = new TextButton(this, 0, 0, 'button', () => { selectZoneHandler('Water', this.header, this._gameManager); }, this, 1, 0, 2, 1)
             .setText('Water', textStyle)
             .eventTextYAdjustment(3);
-        var building5 = new TextButton(this, 0, 0, 'button', () => { selectBuildingHandler('Electricity', this.header, this._gameManager); }, this, 1, 0, 2, 1)
+        var electricity = new TextButton(this, 0, 0, 'button', () => { selectZoneHandler('Electricity', this.header, this._gameManager); }, this, 1, 0, 2, 1)
             .setText('Electricity', textStyle)
             .eventTextYAdjustment(3);
         var column = new Column(this, 190, 100);
         column.addNode(road, 0, 5);
-        column.addNode(buliding1, 0, 5);
-        column.addNode(building2, 0, 5);
-        column.addNode(building3, 0, 5);
-        column.addNode(building4, 0, 5);
-        column.addNode(building5, 0, 5);
+        column.addNode(residentialZone, 0, 5);
+        column.addNode(marketZone, 0, 5);
+        column.addNode(industrialZone, 0, 5);
+        column.addNode(water, 0, 5);
+        column.addNode(electricity, 0, 5);
     }
 
 }
@@ -196,7 +195,7 @@ function resize(gameSize) {
     this.cameras.resize(width, height);
 }
 
-const selectBuildingHandler = (type, header, _gameManager) => {
+const selectZoneHandler = (type, header, _gameManager) => {
     header.setText('Choosed ' + type).setOrigin(0.0, 0.0);
 
     switch (type) {
@@ -205,15 +204,15 @@ const selectBuildingHandler = (type, header, _gameManager) => {
             break;
 
         case 'Residential Zone':
-            _gameManager.setCurrentBlock(new ResidentialBuildingMapObject());
+            _gameManager.setCurrentBlock(new ResidentialZoneMapObject());
             break;
 
         case 'Market Zone':
-            _gameManager.setCurrentBlock(new MarketBuildingMapObject());
+            _gameManager.setCurrentBlock(new MarketZoneMapObject());
             break;
 
         case 'Industrial Zone':
-            _gameManager.setCurrentBlock(new IndustrialBuildingMapObject());
+            _gameManager.setCurrentBlock(new IndustrialZoneMapObject());
             break;
 
         case 'Water':
