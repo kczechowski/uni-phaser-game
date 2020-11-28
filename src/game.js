@@ -2,11 +2,12 @@
 /* eslint-disable linebreak-style */
 import Phaser, { Game, Scene } from 'phaser';
 import IsoPlugin from 'phaser3-plugin-isometric';
-import { Column, TextSprite, TextButton } from 'phaser-ui-tools';
+import { Column, TextSprite, TextButton, Row } from 'phaser-ui-tools';
 
 import { GameManager } from "./GameManager";
 import { ElectricityMapObject, IndustrialBuildingMapObject, IndustrialZoneMapObject, MarketBuildingMapObject, MarketZoneMapObject, ResidentialBuildingMapObject, ResidentialZoneMapObject, RoadMapObject, WaterMapObject } from "./map";
 
+var textStyle = { 'fill': '#FFF', 'font': '16px Courier New' };
 
 class IsoInteractionExample extends Scene {
 
@@ -20,8 +21,10 @@ class IsoInteractionExample extends Scene {
         super(sceneConfig);
 
         this._gameManager = new GameManager();
+        this.statusBar = this._gameManager.gameState;
         console.log(this._gameManager);
     }
+
 
 
     preload() {
@@ -55,6 +58,7 @@ class IsoInteractionExample extends Scene {
 
         this.createMap();
         this.addUi();
+        this.addGameBar();
         this.setTimers();
 
 
@@ -83,9 +87,25 @@ class IsoInteractionExample extends Scene {
             console.log(this._gameManager.gameState);
         };
 
+        const onUiUpdate = () => {
+
+            if (this._gameManager.gameState.cash < 0) {
+                this.addGameBar(true);
+                return;
+            }
+            this.addGameBar(false);
+        };
+
         const costsTimer = this.time.addEvent({
             delay: 10000,                // ms
             callback: onCosts,
+            callbackScope: this,
+            loop: true
+        });
+
+        const uiTimer = this.time.addEvent({
+            delay: 500,                // ms
+            callback: onUiUpdate,
             callbackScope: this,
             loop: true
         });
@@ -145,7 +165,7 @@ class IsoInteractionExample extends Scene {
     }
 
     addUi() {
-        var textStyle = { 'fill': '#FFF', 'font': '16px Courier New' };
+
         this.header = new TextSprite(this, 0, 0, 'header').setText('SimCityPAW', textStyle).setOrigin(0.0, 0.0);
 
         var road = new TextButton(this, 0, 0, 'button', () => { selectZoneHandler('Road', this.header, this._gameManager); }, this, 1, 0, 2, 1)
@@ -173,6 +193,42 @@ class IsoInteractionExample extends Scene {
         column.addNode(industrialZone, 0, 5);
         column.addNode(water, 0, 5);
         column.addNode(electricity, 0, 5);
+    }
+
+    addGameBar(isDeficit) {
+        let sign = '+';
+        isDeficit ? sign = '' : '+';
+        // var currentBlock = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
+        //     .setText('currentBlock:' + this._gameManager.gameState.currentBlock, textStyle)
+        //     .eventTextYAdjustment(3);
+        var cash = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
+            .setText('Cash: (' + sign + this._gameManager.gameState.cash, textStyle + ')')
+            .eventTextYAdjustment(3);
+        var residents = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
+            .setText('residents:' + this._gameManager.gameState.residents, textStyle)
+            .eventTextYAdjustment(3);
+        var employed = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
+            .setText('employed:' + this._gameManager.gameState.employed, textStyle)
+            .eventTextYAdjustment(3);
+        var residentialRate = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
+            .setText('residentialRate:' + this._gameManager.gameState.residentialRate, textStyle)
+            .eventTextYAdjustment(3);
+        var industrialRate = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
+            .setText('industrialRate:' + this._gameManager.gameState.industrialRate, textStyle)
+            .eventTextYAdjustment(3);
+        var marketRate = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
+            .setText('marketRate:' + this._gameManager.gameState.marketRate, textStyle)
+            .eventTextYAdjustment(3);
+
+        var row = new Row(this, 800, 30);
+
+        //row.addNode(currentBlock, 25, 0);
+        row.addNode(cash, 55, 0);
+        row.addNode(residents, 55, 0);
+        row.addNode(employed, 55, 0);
+        row.addNode(residentialRate, 55, 0);
+        row.addNode(industrialRate, 55, 0);
+        row.addNode(marketRate, 55, 0);
     }
 
 }
