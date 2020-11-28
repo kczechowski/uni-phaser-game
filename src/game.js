@@ -65,12 +65,25 @@ class IsoInteractionExample extends Scene {
         const onGrow = () => {
             this._gameManager.grow();
             // console.clear();
-            // console.log(this._gameManager.gameState);
+            // console.log(this._gameManager);
         };
 
         const growTimer = this.time.addEvent({
             delay: 1000,                // ms
             callback: onGrow,
+            callbackScope: this,
+            loop: true
+        });
+
+        const onCosts = () => {
+            this._gameManager.costs();
+            // console.clear();
+            console.log(this._gameManager.gameState);
+        };
+
+        const costsTimer = this.time.addEvent({
+            delay: 10000,                // ms
+            callback: onCosts,
             callbackScope: this,
             loop: true
         });
