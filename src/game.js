@@ -53,9 +53,27 @@ class IsoInteractionExample extends Scene {
 
         this.createMap();
         this.addUi();
+        this.setTimers();
 
 
         this.scale.on('resize', resize, this);
+
+    }
+
+    setTimers() {
+
+        const onGrow = () => {
+            this._gameManager.grow();
+            // console.clear();
+            // console.log(this._gameManager.gameState);
+        };
+
+        const growTimer = this.time.addEvent({
+            delay: 1000,                // ms
+            callback: onGrow,
+            callbackScope: this,
+            loop: true
+        });
 
     }
 

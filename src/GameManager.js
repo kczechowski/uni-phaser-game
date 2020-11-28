@@ -41,7 +41,20 @@ export class GameManager {
         if (!toAdd) throw 'No currentBlock';
         //TODO add constraints on building
         if (this.getMapObjectAt(tileX, tileY).constructor.name === toAdd.constructor.name) throw 'Exists the same';
+
+        if(!this.hasEnoughMoney(toAdd)) throw 'Not enough money';
+
+        this._gameState.cash -= toAdd.price;
+
         this.replaceMapObjectAt(tileX, tileY, toAdd);
+    }
+
+    hasEnoughMoney(mapObject) {
+        return this._gameState.cash - mapObject.price >= 0;
+    }
+
+    grow() {
+        // console.log('grow');
     }
 
     setCurrentBlock(obj) {
