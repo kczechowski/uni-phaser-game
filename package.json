@@ -1,11 +1,9 @@
 {
-  "name": "phaser3-plugin-isometric-docs",
+  "name": "uni-phaser-game",
   "version": "1.0.0",
-  "description": "The docs page for phaser3-plugin-isometric",
+  "description": "uni-phaser-gam",
   "main": "index.js",
-  "repository": "https://sebashwa.github.io/phaser3-plugin-isometric",
-  "author": "sebashwa",
-  "license": "MIT",
+  "repository": "https://github.com/kczechowski/uni-phaser-game",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
