@@ -21,8 +21,7 @@ class IsoInteractionExample extends Scene {
         super(sceneConfig);
 
         this._gameManager = new GameManager();
-        this.statusBar = this._gameManager.gameState;
-        console.log(this._gameManager);
+        // console.log(this._gameManager);
     }
 
 
@@ -51,14 +50,22 @@ class IsoInteractionExample extends Scene {
 
     create() {
 
-        // console.log(this);
+
         this.isoGroup = this.add.group();
 
         this.iso.projector.origin.setTo(0.5, 0.5);
 
         this.createMap();
         this.addUi();
-        this.addGameBar();
+
+        this.cash = new TextSprite(this, 0, 0, 'button').setText('Cash (' + this._gameManager.gameState.cash + ')', textStyle);
+        this.residents = new TextSprite(this, 0, 0, 'button').setText('residents' + this._gameManager.gameState.residents, textStyle);
+        this.employed = new TextSprite(this, 0, 0, 'button').setText('employed' + this._gameManager.gameState.employed, textStyle);
+        this.availableJobs = new TextSprite(this, 0, 0, 'button').setText('availableJobs' + this._gameManager.gameState.availableJobs, textStyle);
+        this.industrialRate = new TextSprite(this, 0, 0, 'button').setText('industrialRate' + this._gameManager.gameState.industrialRate, textStyle);
+        this.marketRate = new TextSprite(this, 0, 0, 'button').setText('marketRate' + this._gameManager.gameState.marketRate, textStyle);
+
+        this.addGameBar(false, false);
         this.setTimers();
 
 
@@ -92,10 +99,10 @@ class IsoInteractionExample extends Scene {
         const onUiUpdate = () => {
 
             if (this._gameManager.gameState.cash < 0) {
-                this.addGameBar(true);
+                this.addGameBar(true, true);
                 return;
             }
-            this.addGameBar(false);
+            this.addGameBar(false, true);
         };
 
         const costsTimer = this.time.addEvent({
@@ -116,7 +123,7 @@ class IsoInteractionExample extends Scene {
 
     createMap() {
         this.isoGroup.clear(true, true);
-        this.iconLayer.clear(true, true);
+        // this.iconLayer.clear(true, true);
 
         const tileSize = 42;
 
@@ -130,13 +137,13 @@ class IsoInteractionExample extends Scene {
 
                 const tile = this.add.isoSprite(xOffset, yOffset, 0, mapObject.image, this.isoGroup);
 
-                if(this._gameManager.blockHasWater(x,y) && !this._gameManager.blockHasElectricity(x,y)) {
+                if (this._gameManager.blockHasWater(x, y) && !this._gameManager.blockHasElectricity(x, y)) {
                     tile.setTint(0x8888ff);
-                } else if (this._gameManager.blockHasWater(x,y) && this._gameManager.blockHasElectricity(x,y)) {
+                } else if (this._gameManager.blockHasWater(x, y) && this._gameManager.blockHasElectricity(x, y)) {
                     tile.setTint(0xff77ff)
-                } else if (!this._gameManager.blockHasWater(x,y) && !this._gameManager.blockHasElectricity(x,y)) {
+                } else if (!this._gameManager.blockHasWater(x, y) && !this._gameManager.blockHasElectricity(x, y)) {
                     tile.setTint(0xffffff);
-                } else if (!this._gameManager.blockHasWater(x,y) && this._gameManager.blockHasElectricity(x,y)) {
+                } else if (!this._gameManager.blockHasWater(x, y) && this._gameManager.blockHasElectricity(x, y)) {
                     tile.setTint(0xffff99);
                 }
 
@@ -208,40 +215,33 @@ class IsoInteractionExample extends Scene {
         column.addNode(electricity, 0, 5);
     }
 
-    addGameBar(isDeficit) {
+    addGameBar(isDeficit, isUpdated) {
+
         let sign = '+';
         isDeficit ? sign = '' : '+';
-        // var currentBlock = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
-        //     .setText('currentBlock:' + this._gameManager.gameState.currentBlock, textStyle)
-        //     .eventTextYAdjustment(3);
-        var cash = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
-            .setText('Cash: (' + sign + this._gameManager.gameState.cash, textStyle + ')')
-            .eventTextYAdjustment(3);
-        var residents = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
-            .setText('residents:' + this._gameManager.gameState.residents, textStyle)
-            .eventTextYAdjustment(3);
-        var employed = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
-            .setText('employed:' + this._gameManager.gameState.employed, textStyle)
-            .eventTextYAdjustment(3);
-        var residentialRate = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
-            .setText('residentialRate:' + this._gameManager.gameState.residentialRate, textStyle)
-            .eventTextYAdjustment(3);
-        var industrialRate = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
-            .setText('industrialRate:' + this._gameManager.gameState.industrialRate, textStyle)
-            .eventTextYAdjustment(3);
-        var marketRate = new TextButton(this, 0, 0, 'button', null, this, 1, 0, 2, 1)
-            .setText('marketRate:' + this._gameManager.gameState.marketRate, textStyle)
-            .eventTextYAdjustment(3);
+
+
+        if (isUpdated) {
+
+            this.cash.text.setText('Cash (' + sign + this._gameManager.gameState.cash + ')', textStyle);
+            this.residents.text.setText('residents:' + this._gameManager.gameState.residents, textStyle);
+            this.employed.text.setText('employed:' + this._gameManager.gameState.employed, textStyle);
+            this.availableJobs.text.setText('availableJobs:' + this._gameManager.gameState.availableJobs, textStyle);
+            this.industrialRate.text.setText('industrialRate:' + this._gameManager.gameState.industrialRate, textStyle);
+            this.marketRate.text.setText('marketRate:' + this._gameManager.gameState.marketRate, textStyle);
+
+        }
+
 
         var row = new Row(this, 800, 30);
 
-        //row.addNode(currentBlock, 25, 0);
-        row.addNode(cash, 55, 0);
-        row.addNode(residents, 55, 0);
-        row.addNode(employed, 55, 0);
-        row.addNode(residentialRate, 55, 0);
-        row.addNode(industrialRate, 55, 0);
-        row.addNode(marketRate, 55, 0);
+        row.addNode(this.cash, 55, 0);
+        row.addNode(this.residents, 55, 0);
+        row.addNode(this.employed, 55, 0);
+        row.addNode(this.availableJobs, 55, 0);
+        row.addNode(this.industrialRate, 55, 0);
+        row.addNode(this.marketRate, 55, 0);
+
     }
 
 }
