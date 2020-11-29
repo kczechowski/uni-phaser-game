@@ -1,6 +1,6 @@
 export const GameState = () => ({
     currentBlock: null,
-    cash: 100000,
+    cash: 100,
     residents: 0,
     employed: 0,
     residentialRate: 100,

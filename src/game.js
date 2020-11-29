@@ -22,6 +22,9 @@ class IsoInteractionExample extends Scene {
 
         this._gameManager = new GameManager();
         // console.log(this._gameManager);
+        this.alert;
+        this.isAlertOn = false;
+        this.isOver = false;
     }
 
 
@@ -66,6 +69,8 @@ class IsoInteractionExample extends Scene {
         this.employed = new TextSprite(this, 0, 0, 'field').setText('employed' + this._gameManager.gameState.employed, textStyle);
         this.availableJobs = new TextSprite(this, 0, 0, 'field').setText('availableJobs' + this._gameManager.gameState.availableJobs, textStyle);
 
+
+
         this.addGameBar(false, false);
         this.setTimers();
 
@@ -99,12 +104,23 @@ class IsoInteractionExample extends Scene {
 
         const onUiUpdate = () => {
 
+            console.log(this._gameManager.gameState.expectedProfits);
+            if (this._gameManager.gameState.cash <= 0) {
+
+                this.isAlertOn = true;
+                if (!this.isOver) {
+                    this.alert = this.add.text(750, 400, 'Game Over', { font: '54px Arial', color: 'red' });
+                    this.isOver = true;
+                }
+
+            }
             if (this._gameManager.gameState.expectedProfits < 0) {
                 this.addGameBar(true, true);
                 return;
             }
             this.addGameBar(false, true);
         };
+
 
         const costsTimer = this.time.addEvent({
             delay: 10000,                // ms
@@ -145,7 +161,7 @@ class IsoInteractionExample extends Scene {
                     waterTile = this.add.isoSprite(xOffset - 10, yOffset + 10, 0, 'haswater', this.isoGroup);
                 }
 
-                if(this._gameManager.blockHasElectricity(x, y)) {
+                if (this._gameManager.blockHasElectricity(x, y)) {
                     electricityTile = this.add.isoSprite(xOffset + 10, yOffset + 10, 0, 'haselectricity', this.isoGroup);
                 }
 
@@ -161,9 +177,18 @@ class IsoInteractionExample extends Scene {
                         this._gameManager.tryToPutObjectAt(x, y);
                         console.log('put object at tile:', x, y, this._gameManager.getMapObjectAt(x, y));
                         this.createMap();
+                        if (this.isAlertOn) this.alert.text = '';
+                        //console.log(this.alert);
                     } catch (e) {
-                        // replace with toast
                         console.error(e);
+                        //this.alert = new TextSprite(this, 900, 350, 'field').setText('e', textStyle);
+                        if (!this.isOver) {
+                            if (this.isAlertOn) {
+                                this.alert.text = '';
+                            }
+                            this.alert = this.add.text(750, 400, e, { font: '54px Arial' });
+                            this.isAlertOn = true;
+                        }
                     }
 
                 });
@@ -171,14 +196,14 @@ class IsoInteractionExample extends Scene {
                 tile.on('pointerover', (e) => {
                     // this.setTint(0x86bfda);
                     tile.isoZ += 5;
-                    if(waterTile) waterTile.isoZ += 5;
-                    if(electricityTile) electricityTile.isoZ += 5;
+                    if (waterTile) waterTile.isoZ += 5;
+                    if (electricityTile) electricityTile.isoZ += 5;
                 });
 
                 tile.on('pointerout', (e) => {
                     tile.isoZ -= 5;
-                    if(waterTile) waterTile.isoZ -= 5;
-                    if(electricityTile) electricityTile.isoZ -= 5;
+                    if (waterTile) waterTile.isoZ -= 5;
+                    if (electricityTile) electricityTile.isoZ -= 5;
                 });
 
                 yOffset += tileSize;
@@ -222,8 +247,8 @@ class IsoInteractionExample extends Scene {
 
     addGameBar(isDeficit, isUpdated) {
 
-        let sign = '+';
-        isDeficit ? sign = '' : '+';
+        let sign;
+        isDeficit ? sign = '-' : sign = '+';
 
 
         if (isUpdated) {
