@@ -40,7 +40,8 @@ class IsoInteractionExample extends Scene {
         this.load.image('marketbuilding', '../dist/assets/marketbuilding.png');
         this.load.image('industrialzone', '../dist/assets/industrialzone.png');
         this.load.image('industrialbuilding', '../dist/assets/industrialbuilding.png');
-        this.load.spritesheet('button', assetRoot + 'button.png', { frameWidth: 128, frameHeight: 48 });
+        this.load.spritesheet('button', assetRoot + 'button.png', { frameWidth: 228, frameHeight: 48 });
+        this.load.spritesheet('field', assetRoot + 'button2.png', { frameWidth: 328, frameHeight: 48 });
         this.load.scenePlugin({
             key: 'IsoPlugin',
             url: IsoPlugin,
@@ -58,12 +59,10 @@ class IsoInteractionExample extends Scene {
         this.createMap();
         this.addUi();
 
-        this.cash = new TextSprite(this, 0, 0, 'button').setText('Cash (' + this._gameManager.gameState.cash + ')', textStyle);
-        this.residents = new TextSprite(this, 0, 0, 'button').setText('residents' + this._gameManager.gameState.residents, textStyle);
-        this.employed = new TextSprite(this, 0, 0, 'button').setText('employed' + this._gameManager.gameState.employed, textStyle);
-        this.availableJobs = new TextSprite(this, 0, 0, 'button').setText('availableJobs' + this._gameManager.gameState.availableJobs, textStyle);
-        this.industrialRate = new TextSprite(this, 0, 0, 'button').setText('industrialRate' + this._gameManager.gameState.industrialRate, textStyle);
-        this.marketRate = new TextSprite(this, 0, 0, 'button').setText('marketRate' + this._gameManager.gameState.marketRate, textStyle);
+        this.cash = new TextSprite(this, 0, 0, 'field').setText('Cash (' + this._gameManager.gameState.cash + ')', textStyle);
+        this.residents = new TextSprite(this, 0, 0, 'field').setText('residents' + this._gameManager.gameState.residents, textStyle);
+        this.employed = new TextSprite(this, 0, 0, 'field').setText('employed' + this._gameManager.gameState.employed, textStyle);
+        this.availableJobs = new TextSprite(this, 0, 0, 'field').setText('availableJobs' + this._gameManager.gameState.availableJobs, textStyle);
 
         this.addGameBar(false, false);
         this.setTimers();
@@ -98,7 +97,7 @@ class IsoInteractionExample extends Scene {
 
         const onUiUpdate = () => {
 
-            if (this._gameManager.gameState.cash < 0) {
+            if (this._gameManager.gameState.expectedProfits < 0) {
                 this.addGameBar(true, true);
                 return;
             }
@@ -186,7 +185,7 @@ class IsoInteractionExample extends Scene {
 
     addUi() {
 
-        this.header = new TextSprite(this, 0, 0, 'header').setText('SimCityPAW', textStyle).setOrigin(0.0, 0.0);
+        this.header = new TextSprite(this, 0, 9, 'header').setText('SimCityPAW', textStyle).setOrigin(0.0, 0.1);
 
         var road = new TextButton(this, 0, 0, 'button', () => { selectZoneHandler('Road', this.header, this._gameManager); }, this, 1, 0, 2, 1)
             .setText('Road', textStyle)
@@ -227,8 +226,6 @@ class IsoInteractionExample extends Scene {
             this.residents.text.setText('residents:' + this._gameManager.gameState.residents, textStyle);
             this.employed.text.setText('employed:' + this._gameManager.gameState.employed, textStyle);
             this.availableJobs.text.setText('availableJobs:' + this._gameManager.gameState.availableJobs, textStyle);
-            this.industrialRate.text.setText('industrialRate:' + this._gameManager.gameState.industrialRate, textStyle);
-            this.marketRate.text.setText('marketRate:' + this._gameManager.gameState.marketRate, textStyle);
 
         }
 
@@ -239,8 +236,6 @@ class IsoInteractionExample extends Scene {
         row.addNode(this.residents, 55, 0);
         row.addNode(this.employed, 55, 0);
         row.addNode(this.availableJobs, 55, 0);
-        row.addNode(this.industrialRate, 55, 0);
-        row.addNode(this.marketRate, 55, 0);
 
     }
 
@@ -265,7 +260,7 @@ function resize(gameSize) {
 }
 
 const selectZoneHandler = (type, header, _gameManager) => {
-    header.setText('Choosed ' + type).setOrigin(0.0, 0.0);
+    header.setText('Choosed ' + type).setOrigin(0.0, 0.1);
 
     switch (type) {
         case 'Road':
