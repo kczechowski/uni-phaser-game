@@ -40,6 +40,8 @@ class IsoInteractionExample extends Scene {
         this.load.image('marketbuilding', '../dist/assets/marketbuilding.png');
         this.load.image('industrialzone', '../dist/assets/industrialzone.png');
         this.load.image('industrialbuilding', '../dist/assets/industrialbuilding.png');
+        this.load.image('haswater', '../dist/assets/haswater.png');
+        this.load.image('haselectricity', '../dist/assets/haselectricity.png');
         this.load.spritesheet('button', assetRoot + 'button.png', { frameWidth: 228, frameHeight: 48 });
         this.load.spritesheet('field', assetRoot + 'button2.png', { frameWidth: 328, frameHeight: 48 });
         this.load.scenePlugin({
@@ -136,14 +138,15 @@ class IsoInteractionExample extends Scene {
 
                 const tile = this.add.isoSprite(xOffset, yOffset, 0, mapObject.image, this.isoGroup);
 
-                if (this._gameManager.blockHasWater(x, y) && !this._gameManager.blockHasElectricity(x, y)) {
-                    tile.setTint(0x8888ff);
-                } else if (this._gameManager.blockHasWater(x, y) && this._gameManager.blockHasElectricity(x, y)) {
-                    tile.setTint(0xff77ff)
-                } else if (!this._gameManager.blockHasWater(x, y) && !this._gameManager.blockHasElectricity(x, y)) {
-                    tile.setTint(0xffffff);
-                } else if (!this._gameManager.blockHasWater(x, y) && this._gameManager.blockHasElectricity(x, y)) {
-                    tile.setTint(0xffff99);
+                let waterTile;
+                let electricityTile;
+
+                if (this._gameManager.blockHasWater(x, y)) {
+                    waterTile = this.add.isoSprite(xOffset - 10, yOffset + 10, 0, 'haswater', this.isoGroup);
+                }
+
+                if(this._gameManager.blockHasElectricity(x, y)) {
+                    electricityTile = this.add.isoSprite(xOffset + 10, yOffset + 10, 0, 'haselectricity', this.isoGroup);
                 }
 
                 tile.setInteractive();
@@ -168,11 +171,14 @@ class IsoInteractionExample extends Scene {
                 tile.on('pointerover', (e) => {
                     // this.setTint(0x86bfda);
                     tile.isoZ += 5;
+                    if(waterTile) waterTile.isoZ += 5;
+                    if(electricityTile) electricityTile.isoZ += 5;
                 });
 
                 tile.on('pointerout', (e) => {
-                    // this.clearTint();
                     tile.isoZ -= 5;
+                    if(waterTile) waterTile.isoZ -= 5;
+                    if(electricityTile) electricityTile.isoZ -= 5;
                 });
 
                 yOffset += tileSize;
