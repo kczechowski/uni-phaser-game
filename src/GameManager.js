@@ -1,4 +1,4 @@
-import {GameState} from "./GameState";
+import { GameState } from "./GameState";
 import {
     EmptyMapObject,
     IndustrialBuildingMapObject,
@@ -18,8 +18,8 @@ export class GameManager {
     }
 
     createAndFillTwoDArray(rows, columns, defaultValue) {
-        return Array.from({length: rows}, () => (
-            Array.from({length: columns}, () => defaultValue)
+        return Array.from({ length: rows }, () => (
+            Array.from({ length: columns }, () => defaultValue)
         ))
     }
 
@@ -138,7 +138,7 @@ export class GameManager {
 
                 const mapObject = this.getMapObjectAt(x, y);
 
-                if(mapObject.type === 'residentialzone' && this.availableJobs() > 0 && this.blockHasWater(x, y) && this.blockHasElectricity(x, y) && this.blockHasRoad(x, y)) {
+                if (mapObject.type === 'residentialzone' && this.availableJobs() > 0 && this.blockHasWater(x, y) && this.blockHasElectricity(x, y) && this.blockHasRoad(x, y)) {
                     this.replaceMapObjectAt(x, y, new ResidentialBuildingMapObject());
                     this.gameState.residents += 10;
                 }
@@ -149,9 +149,9 @@ export class GameManager {
 
         console.log('unemployed', unemployed);
 
-        if(this.availableJobs() > 0 && this.gameState.residents > 0 ) {
+        if (this.availableJobs() > 0 && this.gameState.residents > 0) {
             this.gameState.employed += unemployed;
-            if(this.gameState.employed > this.gameState.residents) this.gameState.employed = this.gameState.residents;
+            if (this.gameState.employed > this.gameState.residents) this.gameState.employed = this.gameState.residents;
         }
     }
 
@@ -162,8 +162,8 @@ export class GameManager {
 
                 const mapObject = this.getMapObjectAt(x, y);
 
-                if((this.availableJobs() <= 0 || this.availableJobs() < 40) && this.blockHasWater(x, y) && this.blockHasElectricity(x, y) && this.blockHasRoad(x, y)) {
-                    if(mapObject.type === 'marketzone')
+                if ((this.availableJobs() <= 0 || this.availableJobs() < 40) && this.blockHasWater(x, y) && this.blockHasElectricity(x, y) && this.blockHasRoad(x, y)) {
+                    if (mapObject.type === 'marketzone')
                         this.replaceMapObjectAt(x, y, new MarketBuildingMapObject());
                     else if (mapObject.type === 'industrialzone')
                         this.replaceMapObjectAt(x, y, new IndustrialBuildingMapObject());
@@ -174,7 +174,8 @@ export class GameManager {
 
     costs() {
         const costs = this.calculateCosts();
-        this.gameState.cash = this.gameState.cash - costs;
+        let tmp = this.gameState.cash - costs;
+        this.gameState.cash = tmp.toFixed(2);
         console.log('costs: ', costs);
     }
 
