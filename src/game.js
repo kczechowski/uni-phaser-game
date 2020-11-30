@@ -104,21 +104,23 @@ class IsoInteractionExample extends Scene {
 
         const onUiUpdate = () => {
 
-            console.log(this._gameManager.gameState.expectedProfits);
-            if (this._gameManager.gameState.cash <= 0) {
-
-                this.isAlertOn = true;
-                if (!this.isOver) {
-                    this.alert = this.add.text(750, 400, 'Game Over', { font: '54px Arial', color: 'red' });
+            if (!this.isOver) {
+                if (this._gameManager.gameState.cash <= 0) {
+                    
                     this.isOver = true;
+
+                    this.alert = '';
+                    this.alert = this.add.text(750, 400, 'Game Over', { font: '54px Arial', color: 'red' });
+
+
+                }
+                if (this._gameManager.gameState.expectedProfits <= this._gameManager.costsVal) {
+                    this.addGameBar(true, true);
+                    return;
                 }
 
+                this.addGameBar(false, true);
             }
-            if (this._gameManager.gameState.expectedProfits < 0) {
-                this.addGameBar(true, true);
-                return;
-            }
-            this.addGameBar(false, true);
         };
 
 
@@ -248,12 +250,17 @@ class IsoInteractionExample extends Scene {
     addGameBar(isDeficit, isUpdated) {
 
         let sign;
+        let cash = this._gameManager.gameState.cash;
         isDeficit ? sign = '-' : sign = '+';
+
+        if (cash < 0) {
+            cash = cash * -1;
+        }
 
 
         if (isUpdated) {
 
-            this.cash.text.setText('Cash (' + sign + this._gameManager.gameState.cash + ')', textStyle);
+            this.cash.text.setText('Cash (' + sign + cash + ')', textStyle);
             this.residents.text.setText('residents:' + this._gameManager.gameState.residents, textStyle);
             this.employed.text.setText('employed:' + this._gameManager.gameState.employed, textStyle);
             this.availableJobs.text.setText('availableJobs:' + this._gameManager.gameState.availableJobs, textStyle);

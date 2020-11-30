@@ -15,6 +15,8 @@ export class GameManager {
         this._gameState = new GameState();
         this._map = this.createEmptyMap(8, 8);
 
+        this.costsVal;
+
     }
 
     createAndFillTwoDArray(rows, columns, defaultValue) {
@@ -177,6 +179,9 @@ export class GameManager {
         let tmp = this.gameState.cash - costs;
         this.gameState.cash = tmp.toFixed(2);
         console.log('costs: ', costs);
+
+        this.costsVal = costs;
+
     }
 
     calculateCosts() {
