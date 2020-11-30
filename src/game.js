@@ -260,7 +260,9 @@ class IsoInteractionExample extends Scene {
 
         if (isUpdated) {
 
-            this.cash.text.setText('Cash ' + cash + '(' + sign + this._gameManager.gameState.expectedProfits + ')', textStyle);
+            const profits = this._gameManager.gameState.expectedProfits;
+
+            this.cash.text.setText('Cash ' + cash + `(${profits > 0 ? '+' : ''}${profits})` , textStyle);
             this.residents.text.setText('residents:' + this._gameManager.gameState.residents, textStyle);
             this.employed.text.setText('employed:' + this._gameManager.gameState.employed, textStyle);
             this.availableJobs.text.setText('availableJobs:' + this._gameManager.gameState.availableJobs, textStyle);

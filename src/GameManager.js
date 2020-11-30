@@ -176,8 +176,8 @@ export class GameManager {
 
     costs() {
         const costs = this.calculateCosts();
-        let tmp = this.gameState.cash - costs;
-        this.gameState.cash = tmp.toFixed(2);
+        // let tmp = this.gameState.cash - costs;
+        // this.gameState.cash = tmp.toFixed(2);
         console.log('costs: ', costs);
 
         this.costsVal = costs;
@@ -206,9 +206,10 @@ export class GameManager {
     profits() {
         const profits = this.calculateExpectedProfits();
         const expectedCosts = this.calculateCosts();
-        this.gameState.expectedProfits = profits + expectedCosts;
+        console.log(expectedCosts);
+        this.gameState.expectedProfits = profits - expectedCosts;
 
-        this.gameState.cash += profits;
+        this.gameState.cash += this.gameState.expectedProfits;
 
         console.log('profits: ', profits);
     }
