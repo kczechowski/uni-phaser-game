@@ -125,7 +125,7 @@ class IsoInteractionExample extends Scene {
 
 
         const costsTimer = this.time.addEvent({
-            delay: 10000,                // ms
+            delay: 5000,                // ms
             callback: onCosts,
             callbackScope: this,
             loop: true
@@ -260,7 +260,7 @@ class IsoInteractionExample extends Scene {
 
         if (isUpdated) {
 
-            this.cash.text.setText('Cash (' + sign + cash + ')', textStyle);
+            this.cash.text.setText('Cash ' + cash + '(' + sign + this._gameManager.gameState.expectedProfits + ')', textStyle);
             this.residents.text.setText('residents:' + this._gameManager.gameState.residents, textStyle);
             this.employed.text.setText('employed:' + this._gameManager.gameState.employed, textStyle);
             this.availableJobs.text.setText('availableJobs:' + this._gameManager.gameState.availableJobs, textStyle);

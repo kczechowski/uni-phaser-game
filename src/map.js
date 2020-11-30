@@ -23,8 +23,8 @@ export const RoadMapObject = class extends MapObject {
 
     constructor() {
         super('road', 'road');
-        this.price = 10;
-        this.cost = 0.1;
+        this.price = 20;
+        this.cost = 1;
     }
 
 }
@@ -42,7 +42,7 @@ export const MarketZoneMapObject = class extends MapObject {
 
     constructor() {
         super('marketzone', 'marketzone');
-        this.price = 30;
+        this.price = 40;
     }
 
 }
@@ -51,7 +51,7 @@ export const IndustrialZoneMapObject = class extends MapObject {
 
     constructor() {
         super('industrialzone', 'industrialzone');
-        this.price = 30;
+        this.price = 40;
     }
 
 }
@@ -85,7 +85,7 @@ export const WaterMapObject = class extends MapObject {
     constructor() {
         super('water', 'water');
         this.price = 20;
-        this.cost = 0.5;
+        this.cost = 4;
     }
 
 }
@@ -95,7 +95,7 @@ export const ElectricityMapObject = class extends MapObject {
     constructor() {
         super('electricity', 'electricity');
         this.price = 20;
-        this.cost = 0.5;
+        this.cost = 4;
     }
 
 }
